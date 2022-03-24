@@ -1,0 +1,206 @@
+* {
+    margin: 0px;
+    overflow-x: hidden;
+}
+
+body {
+    background-color: rgb(87, 0, 0);
+}
+
+
+/* rgb(230, 230, 230) */
+
+.graphBlock {
+    display: block;
+    padding: 20px;
+    border-radius: 12px;
+    /* background-color: rgb(78, 9, 9); */
+    background-color: white;
+    filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 80));
+    width: 90%;
+    margin: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.graphBlock-title {
+    font-size: 40px;
+    text-align: center;
+    padding: 12px;
+    filter: drop-shadow(0px 0px 4px rgba(100, 100, 100, 80));
+    color: black;
+}
+
+.body-title {
+    font-size: 70px;
+    text-align: center;
+    padding: 24px;
+    filter: drop-shadow(0px 0px 4px rgba(100, 100, 100, 80));
+    color: white;
+}
+
+.body-subtitle {
+    font-size: 40px;
+    text-align: center;
+    padding: 12px;
+    filter: drop-shadow(0px 0px 3px rgba(100, 100, 100, 80));
+    color: white;
+}
+
+
+/* Navbar CSS */
+
+
+/* Style the navbar */
+
+.topnav {
+    background-color: white;
+    overflow: hidden;
+    display: table;
+    width: 100%;
+}
+
+
+/* Style the links inside the navigation bar */
+
+.topnav a {
+    display: table-cell;
+    float: left;
+    color: black;
+    text-align: center;
+    padding: 15px 20px;
+    text-decoration: none;
+    margin: 5px;
+    font-size: 25px;
+    border-radius: 12px;
+}
+
+
+/* Change the color of links on hover */
+
+.topnav a:hover {
+    background-color: rgb(226, 205, 205);
+}
+
+
+/* Add a color to the active/current link */
+
+.topnav a.active {
+    background-color: #04AA6D;
+    color: white;
+}
+
+
+/* Right-aligned section inside the top navigation */
+
+.topnav-right {
+    display: table-cell;
+    float: right;
+}
+
+.menuButton {
+    /* border: none; */
+    /* color: black;
+    text-decoration: none;
+    display: inline-block;
+    background-color: white;
+    font-size: 20px; */
+    display: table-cell;
+    background: none;
+    border: none;
+    border-radius: 12px;
+    align-items: center;
+    padding: 13px 20px;
+    margin-left: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: black;
+    cursor: pointer;
+}
+
+.menuButton:hover {
+    background-color: rgb(226, 205, 205);
+}
+
+.menuButtonIcon {
+    font-size: 40px;
+    display: table-cell;
+}
+
+.nav {
+    width: 350px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #333333;
+    transform: translate(-350px, 0);
+    transition: transform 0.2s;
+}
+
+.main {
+    transition: transform 0.2s;
+}
+
+.nav-open .nav {
+    transform: translate(0, 0);
+}
+
+.nav-open .main {
+    transform: translate(350px);
+}
+
+.nav-close {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    padding: 15px 25px;
+    color: #dddddd;
+    cursor: pointer;
+}
+
+.nav-links-container {
+    display: flex;
+    width: 50%;
+}
+
+.nav-list-container {
+    flex: 1;
+    margin: 10px;
+}
+
+.nav-list-container:first-child {
+    margin-right: 20px;
+}
+
+.nav-list-title {
+    color: white;
+    font-size: 1.5vh;
+}
+
+.nav-list-item {
+    color: white;
+    font-size: 1.5vh;
+}
+
+#bestTeams {
+    width: 50%;
+}
+
+#officialRankings {
+    width: 50%;
+}
+
+.nav-links-container {
+    width: 100%;
+}
+
+#librariesList {}
+
+#librariesItem {
+    color: white;
+    font-size: 25px;
+    text-align: center;
+}

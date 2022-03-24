@@ -1,0 +1,86 @@
+{% extends "layout.html" %} {% block content %}
+<h1 class="body-title">
+    FRC Team Data
+</h1>
+
+
+<!-- Total Values -->
+<div class="graphBlock">
+    <h2 class="graphBlock-title">Total Points Throughout the Event</h2>
+    <div id="subplots" class="chart"></div>
+    <div id="totalPoints" class="chart"></div>
+</div>
+
+
+<!-- Endgame Bar Graph -->
+<div class="graphBlock">
+    <h2 class="graphBlock-title">Team Specific Endgame</h2>
+    <label for="teams">Choose a team...</label>
+    <select name="teams" id="teams" onchange="getOption()">
+        {% for team in teamsDone %}
+            <option value="{{ team }}">{{ team }}</option>
+        {% endfor %}
+    </select>
+    <div id="endgame" class="chart"></div>
+</div>
+
+
+<!-- Sample Graph -->
+<!-- <div class="graphBlock">
+    <h2 class="graphBlock-title">Sample Graph</h2>
+    <div id="sampleGraph" class="chart"></div>
+</div> -->
+
+
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+<script type="text/javascript">
+    var totalPoints = {
+        {
+            totalPoints_fig | safe
+        }
+    };
+    Plotly.plot("totalPoints", totalPoints, {});
+
+    var subplots = {
+        {
+            subplots_fig | safe
+        }
+    };
+    Plotly.plot("subplots", subplots, {});
+
+    var endgame = {
+        {
+            percent_bargraph | safe
+        }
+    };
+    Plotly.plot("endgame", endgame, {});
+
+    var sample_bar = {
+        {
+            sample_barfig | safe
+        }
+    };
+    Plotly.plot("sampleGraph", sample_bar, {});
+</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript">
+    function getOption() {
+
+        const team = document.getElementById("teams").value;
+
+        const dict_team = {
+            team
+        };
+        const json_team = JSON.stringify(dict_team);
+
+        $.ajax({
+            url: "/getDropdown",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(json_team)
+        });
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "layout.html" %} {% block content %}
+<h1 class="body-title">
+    Welcome to a collection of data from event {{ eventCode }}!
+</h1>
+<h2 class="body-subtitle">
+    With the use of the FIRST API, team 6806 has collected data on every team in a particular event, into an easy to read format! This includes lines graphs, bar graphs, and tables.
+</h2>
+<h2 class="body-subtitle">
+    Libraries used to accomplish this include...
+</h2>
+<ul id="librariesList">
+    <li id="librariesItem">Requests</li>
+    <li id="librariesItem">Numpy</li>
+    <li id="librariesItem">Plotly</li>
+    <li id="librariesItem">Google API Client</li>
+    <li id="librariesItem">Google Oauth2</li>
+    <li id="librariesItem">Flask</li>
+</ul>
+{% endblock %}

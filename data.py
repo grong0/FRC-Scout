@@ -1,5 +1,7 @@
 # from keep_alive import keep_alive
+from csv import writer
 import requests
+import pprint
 import numpy as np
 import plotly.graph_objs as go
 import plotly.express as px
@@ -8,7 +10,7 @@ from googleapiclient.discovery import build
 from google.oauth2 import service_account
 
 eventYear = "2022"
-eventCode = "NYLI"
+eventCode = "NYLI2"
 
 username = "Grongo"
 api_key = "wgGPuZZdB2nVqEiVXIYe"
@@ -89,35 +91,12 @@ def getAverage(teamNumber, match = None, category = None):
                     if team['matchNumber'] == match:
                         return team[category]
 
-def getBar(teamNumber, teamInfo):
-    percentData_x = []
-    percentData_y = []
-    for team in teamInfo:
-        if team['teamNumber'] == teamNumber:
-            for x in range(5):
-                if x == 0:
-                    percentData_y.append(team['PercentNone'])
-                    percentData_x.append("None")
-                if x == 1:
-                    percentData_y.append(team['PercentLow'])
-                    percentData_x.append("Low")
-                if x == 2:
-                    percentData_y.append(team['PercentMid'])
-                    percentData_x.append("Mid")
-                if x == 3:
-                    percentData_y.append(team['PercentHigh'])
-                    percentData_x.append("High")
-                if x == 4:
-                    percentData_y.append(team['PercentTraversal'])
-                    percentData_x.append("Traversal")
-    fig = px.bar(x=percentData_x, y=percentData_y, range_y=[0, 100])
-    fig.update_layout(
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)'
-    )
-    fig.update_xaxes(showline=True, linewidth=2, linecolor='white', gridcolor='rgba(255, 255, 255, 50)')
-    fig.update_yaxes(showline=True, linewidth=2, linecolor='white', gridcolor='rgba(255, 255, 255, 50)')
-    return fig
+def Sort(sub_li):
+    # reverse = None (Sorts in Ascending order)
+    # key is set to sort using second element of 
+    # sublist lambda has been used
+    sub_li.sort(key = lambda x: x['teamNumber'])
+    return sub_li
 
             
 score_url = None
@@ -368,22 +347,22 @@ while keepGoing:
             
             
             teamInfo.append({
-                'teamNumber' : y['teamNumber'],
-                'matchCount' : len(score_data),
-                'AvAutoPoints' : av_autoScore,
-                'AvTeleOpPoints' : av_toScore,
-                'AvEndgamePoints' : av_egScore,
-                'AvFoulCount' : av_foulCount,
-                'AvFoulPoints' : av_foulPoints,
-                'AvTotalPoints' : av_totalPoints,
-                'AvEnemyTOPoints' : av_enemyToScore,
-                'PercentTaxi' : percent_taxi,
-                'PercentNone' : percent_none,
-                'PercentLow' : percent_low,
-                'PercentMid' : percent_mid,
-                'PercentHigh' : percent_high,
-                'PercentTraversal' : percent_traversal,
-                'MostCommonEndgame' : mostCommonEndgame
+                "teamNumber" : y['teamNumber'],
+                "matchCount" : len(score_data),
+                "AvAutoPoints" : av_autoScore,
+                "AvTeleOpPoints" : av_toScore,
+                "AvEndgamePoints" : av_egScore,
+                "AvFoulCount" : av_foulCount,
+                "AvFoulPoints" : av_foulPoints,
+                "AvTotalPoints" : av_totalPoints,
+                "AvEnemyTOPoints" : av_enemyToScore, # Change to based on difference in avereage team teleop score, to that match's score.
+                "PercentTaxi" : percent_taxi,
+                "PercentNone" : percent_none,
+                "PercentLow" : percent_low,
+                "PercentMid" : percent_mid,
+                "PercentHigh" : percent_high,
+                "PercentTraversal" : percent_traversal,
+                "MostCommonEndgame" : mostCommonEndgame
             })
     
             teamsDone.append(y['teamNumber'])
@@ -440,6 +419,9 @@ while keepGoing:
 #     'PercentTraversal' : percent_traversal,
 #     'MostCommonEndgame' : mostCommonEndgame
 # })
+
+    teamInfo = Sort(teamInfo)
+
     mod_teamInfo = []
     for x in teamInfo:
         mod_teamInfo.append(x)
@@ -533,15 +515,19 @@ while keepGoing:
 
     
     values = [
-        # ['Team Number', '', 'Av AutoPoints', '', 'Av TO Points', '', 'Av EG Points', '', 'Av FoulCount', '', 'Av FoulPoints', '', 'Av Total Points', '', 'Av Enemy TO', '', 'Taxi Robot', '', 'None Endgame', '', 'Low Endgame', '', 'Mid Endgame', '', 'High Endgame', '', 'Traversal EG', '', 'Most Common', '']
+        ['Team Number', '', 'Av AutoPoints', 'Av TO Points', 'Av EG Points', 'Av FoulCount', 'Av FoulPoints', 'Av Total Points', 'Av Enemy TO', 'Taxi Robot', 'None Endgame', 'Low Endgame', 'Mid Endgame', 'High Endgame', 'Traversal EG', 'Most Common', '', 'Pos', 'Ranking', 'Best Teams']
     ]
+    noStringValues = []
     rankings = []
     for x in rankingData:
         rankings.append(x['teamNumber'])
 
 
-    
+    noStringTeamInfo = []
+    placeHolder = []
     for index, x in enumerate(teamInfo):
+        noStringTeamInfo.append([x['teamNumber'], x['PercentNone'], x['PercentLow'], x['PercentMid'], x['PercentHigh'], x['PercentTraversal']])
+        placeHolder = []
         ranking_url = f"https://frc-api.firstinspires.org/v3.0/{eventYear}/rankings/{eventCode}?{x['teamNumber']}"
         ranking_response = requests.request("GET", ranking_url, headers=headers, data=payload)
         ranking_data = dict(ranking_response.json())
@@ -564,6 +550,26 @@ while keepGoing:
             str(x['PercentTraversal']) + "%", 
             x['MostCommonEndgame'], 
             '', 
+            (index + 1), 
+            rankings[index], 
+            bestTeams[index]]
+        )
+        noStringValues.append(
+            [x['teamNumber'],
+            x['AvAutoPoints'], 
+            x['AvTeleOpPoints'], 
+            x['AvEndgamePoints'], 
+            x['AvFoulCount'], 
+            x['AvFoulPoints'], 
+            x['AvTotalPoints'], 
+            x['AvEnemyTOPoints'], 
+            x['PercentTaxi'], 
+            x['PercentNone'], 
+            x['PercentLow'], 
+            x['PercentMid'], 
+            x['PercentHigh'], 
+            x['PercentTraversal'], 
+            x['MostCommonEndgame'],
             (index + 1), 
             rankings[index], 
             bestTeams[index]]
@@ -602,6 +608,11 @@ while keepGoing:
     RANGE = "A2:ZZ120"
     # Call the Sheets API
     sheet = service.spreadsheets()
+
+    with open("templates\data.csv", 'w') as t:
+        t.truncate()
+        writer = writer(t)
+        writer.writerows(values)
     
     
     
@@ -636,6 +647,8 @@ while keepGoing:
         # ],
         'values' : values
     }
+
+    teamsDone.sort()
     
     result = service.spreadsheets().values().update(
         spreadsheetId=SPREADSHEET_ID, 
@@ -659,6 +672,7 @@ while keepGoing:
     goToNext = False
     xAxis = []
     yAxis = []
+    totalPoints_teams = []
     for y in teamsDone:
         team = getAverage(y)
         for x in range(team['matchCount']):
@@ -678,6 +692,9 @@ while keepGoing:
                 y = yAxis
             )
         )
+
+        totalPoints_teams.append([xAxis, yAxis, y])
+
         team = None
         teamMatch = None
         xAxis = []
@@ -772,8 +789,20 @@ while keepGoing:
                     yAxis.append(teamMatch['totalFoulPoints'])
                 elif z == 5:
                     yAxis.append(teamMatch['totalEnemyTOPoints'])
+            if z == 0:
+                totalAutoPoints.append([xAxis, yAxis, y])
+            elif z == 1:
+                totalTeleOpPoints.append([xAxis, yAxis, y])
+            elif z == 2:
+                totalEndgamePoints.append([xAxis, yAxis, y])
+            elif z == 3:
+                totalFoulCount.append([xAxis, yAxis, y])
+            elif z == 4:
+                totalFoulPoints.append([xAxis, yAxis, y])
+            elif z == 5:
+                totalEnemyTOPoints.append([xAxis, yAxis, y])
             data.append(
-                go.Scatter(
+                go.Scatter( 
                     name = y,
                     mode = 'lines',
                     line_shape = 'spline',

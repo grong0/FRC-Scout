@@ -8,6 +8,32 @@
 <div class="graphBlock">
     <h2 class="graphBlock-title">Total Points Throughout the Event</h2>
     <div id="subplots" class="chart"></div>
+    <table id="subplots_table">
+        <tr id="subplots_row">
+            <td id="subplots_cell">
+                <div id="totalAutoPoints" class="chart"></div>
+            </td>
+            <td id="subplots_cell">
+                <div id="totalTeleOpPoints" class="chart"></div>
+            </td>
+        </tr>
+        <tr id="subplots_row">
+            <td id="subplots_cell">
+                <div id="totalEndgamePoints" class="chart"></div>
+            </td>
+            <td id="subplots_cell">
+                <div id="totalFoulCount" class="chart"></div>
+            </td>
+        </tr>
+        <tr id="subplots_row">
+            <td id="subplots_cell">
+                <div id="totalFoulPoints" class="chart"></div>
+            </td>
+            <td id="subplots_cell">
+                <div id="totalEnemyTOPoints" class="chart"></div>
+            </td>
+        </tr>
+    </table>
     <div id="totalPoints" class="chart"></div>
 </div>
 
@@ -16,12 +42,19 @@
 <div class="graphBlock">
     <h2 class="graphBlock-title">Team Specific Endgame</h2>
     <label for="teams">Choose a team...</label>
-    <select name="teams" id="teams" onchange="getOption()">
+    <select name="teams" id="teams" onchange="onSelection()">
         {% for team in teamsDone %}
             <option value="{{ team }}">{{ team }}</option>
         {% endfor %}
     </select>
     <div id="endgame" class="chart"></div>
+</div>
+
+
+<!-- Table of All Data -->
+<div class="graphBlock">
+    <h2 class="graphBlock-title">All Data</h2>
+    <div id="dataTable" class="chart"></div>
 </div>
 
 
@@ -33,54 +66,82 @@
 
 
 
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script>
 <script type="text/javascript">
-    var totalPoints = {
+    var TOTALPOINTS = {
         {
-            totalPoints_fig | safe
+            totalPoints_teams
         }
     };
-    Plotly.plot("totalPoints", totalPoints, {});
-
-    var subplots = {
+    var TOTALAUTO = {
         {
-            subplots_fig | safe
+            totalAutoPoints
         }
     };
-    Plotly.plot("subplots", subplots, {});
-
-    var endgame = {
+    var TOTALTELEOP = {
         {
-            percent_bargraph | safe
+            totalTeleOpPoints
         }
     };
-    Plotly.plot("endgame", endgame, {});
-
-    var sample_bar = {
+    var TOTALENDGAME = {
         {
-            sample_barfig | safe
+            totalEndgamePoints
         }
     };
-    Plotly.plot("sampleGraph", sample_bar, {});
-</script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-<script type="text/javascript">
-    function getOption() {
+    var TOTALFOULCOUNT = {
+        {
+            totalFoulCount
+        }
+    };
+    var TOTALFOULPOINTS = {
+        {
+            totalFoulPoints
+        }
+    };
+    var TOTALENEMYTO = {
+        {
+            totalEnemyTOPoints
+        }
+    };
+    var NOSTRINGTEAMINFO = {
+        {
+            noStringTeamInfo
+        }
+    };
+    var TEAMSELECTED = null;
 
-        const team = document.getElementById("teams").value;
+    function totalPoints() {
+        return TOTALPOINTS;
+    }
 
-        const dict_team = {
-            team
-        };
-        const json_team = JSON.stringify(dict_team);
+    function totalAuto() {
+        return TOTALAUTO;
+    }
 
-        $.ajax({
-            url: "/getDropdown",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(json_team)
-        });
+    function totalTeleOp() {
+        return TOTALTELEOP;
+    }
+
+    function totalEndgame() {
+        return TOTALENDGAME;
+    }
+
+    function totalFoulCount() {
+        return TOTALFOULCOUNT;
+    }
+
+    function totalFoulPoints() {
+        return TOTALFOULPOINTS;
+    }
+
+    function totalEnemyTeleOp() {
+        return TOTALENEMYTO;
+    }
+
+    function noStringTeamInfo() {
+        return NOSTRINGTEAMINFO;
     }
 </script>
+<script src="{{ url_for('static', filename='graphing.csv') }}" "></script>
 {% endblock %}

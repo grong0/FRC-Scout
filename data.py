@@ -1,7 +1,12 @@
 # from keep_alive import keep_alive
 from csv import writer
+from lib2to3.pgen2.token import NEWLINE
+from os import name, system
+import sys
+from urllib import response
 import requests
 import pprint
+from colorama import *
 import numpy as np
 import plotly.graph_objs as go
 import plotly.express as px
@@ -15,6 +20,11 @@ eventCode = "NYLI2"
 username = "Grongo"
 api_key = "wgGPuZZdB2nVqEiVXIYe"
 # chart_studio.set_credentials_file(username=username, api_key=api_key)s
+
+def clear(): 
+  
+    if name == 'nt': 
+        _ = system('cls')
 
 def biggest(none, low, mid, high, traversal):
     biggest = 0
@@ -397,11 +407,29 @@ while keepGoing:
             percent_traversal = None
             mostCommonEndgame = None
             
-            print(f"{y['teamNumber']} done compiling!")
-            print(f"({count} / {teamsData['teamCountTotal']})")
-            print("\n")
+            clear()
+            response_done = ''
+            response_left = ''
+            alt = True
+            for x in range(count) :
+                if alt :
+                    response_done += "═"
+                else :
+                    response_done += "─"
+            for x in range(teamsData['teamCountTotal'] - count) :
+                if alt :
+                    response_left += "═"
+                else :
+                    response_left += "─"
+            sys.stdout.write(Fore.WHITE + "Compiling... ")
+            sys.stdout.write(Fore.RED + response_done)
+            sys.stdout.write(Fore.LIGHTBLACK_EX + response_left)
+            sys.stdout.write(Fore.WHITE + f" {round((count / teamsData['teamCountTotal']) * 100, 2)}%")
+            print()
             count += 1
-            
+             
+    print(Fore.GREEN + "Done Compiling!")
+    print(Fore.WHITE)
 # teamInfo.append({
 #     'teamNumber' : y['teamNumber'],
 #     'AvAutoPoints' : av_autoScore,
@@ -611,7 +639,7 @@ while keepGoing:
 
     with open("templates\data.csv", 'w') as t:
         t.truncate()
-        writer = writer(t)
+        writer = writer(t, NEWLINE="")
         writer.writerows(values)
     
     
@@ -886,6 +914,6 @@ while keepGoing:
     # subplots_fig.update_yaxes(showline=True, linewidth=2, linecolor='white', gridcolor='rgba(255, 255, 255, 50)')
     # plotly.offline.plot(subplots_fig, filename='test.html')
 
-
+    clear()
     print('{0} cells updated.'.format(result.get('updatedCells')))
     keepGoing = False

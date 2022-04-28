@@ -55,6 +55,20 @@
 <div class="graphBlock">
     <h2 class="graphBlock-title">All Data</h2>
     <div id="dataTable" class="chart"></div>
+    <!-- <table>
+        <tr>
+            {% for cell in header %}
+                <th>{{ cell }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in data %}
+            <tr>
+                {% for cell in row %}
+                    <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table> -->
 </div>
 
 
@@ -69,79 +83,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script>
 <script type="text/javascript">
-    var TOTALPOINTS = {
-        {
-            totalPoints_teams
-        }
-    };
-    var TOTALAUTO = {
-        {
-            totalAutoPoints
-        }
-    };
-    var TOTALTELEOP = {
-        {
-            totalTeleOpPoints
-        }
-    };
-    var TOTALENDGAME = {
-        {
-            totalEndgamePoints
-        }
-    };
-    var TOTALFOULCOUNT = {
-        {
-            totalFoulCount
-        }
-    };
-    var TOTALFOULPOINTS = {
-        {
-            totalFoulPoints
-        }
-    };
-    var TOTALENEMYTO = {
-        {
-            totalEnemyTOPoints
-        }
-    };
-    var NOSTRINGTEAMINFO = {
-        {
-            noStringTeamInfo
-        }
-    };
+    var TOTALPOINTS = {{ totalPoints_teams }};
+    var TOTALAUTO = {{  totalAutoPoints }};
+    var TOTALTELEOP = {{ totalTeleOpPoints }};
+    var TOTALENDGAME = {{ totalEndgamePoints }};
+    var TOTALFOULCOUNT = {{ totalFoulCount }};
+    var TOTALFOULPOINTS = {{ totalFoulPoints }};
+    var TOTALENEMYTO = {{ totalEnemyTOPoints }};
+    var NOSTRINGTEAMINFO = {{ noStringTeamInfo }};
+    var DATAFILEPATH = "{{ url_for('static', filename='data.csv') }}";
     var TEAMSELECTED = null;
-
-    function totalPoints() {
-        return TOTALPOINTS;
-    }
-
-    function totalAuto() {
-        return TOTALAUTO;
-    }
-
-    function totalTeleOp() {
-        return TOTALTELEOP;
-    }
-
-    function totalEndgame() {
-        return TOTALENDGAME;
-    }
-
-    function totalFoulCount() {
-        return TOTALFOULCOUNT;
-    }
-
-    function totalFoulPoints() {
-        return TOTALFOULPOINTS;
-    }
-
-    function totalEnemyTeleOp() {
-        return TOTALENEMYTO;
-    }
-
-    function noStringTeamInfo() {
-        return NOSTRINGTEAMINFO;
-    }
 </script>
-<script src="{{ url_for('static', filename='graphing.csv') }}" "></script>
+<script src="{{ url_for('static', filename='graphing.js') }}" "></script>
 {% endblock %}

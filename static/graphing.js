@@ -1,21 +1,3 @@
-var TEAMSELECTED = null;
-var TOTALPOINTS = {
-    { totalPoints_teams } };
-var TOTALAUTO = {
-    { totalAutoPoints } };
-var TOTALTELEOP = {
-    { totalTeleOpPoints } };
-var TOTALENDGAME = {
-    { totalEndgamePoints } };
-var TOTALFOULCOUNT = {
-    { totalFoulCount } };
-var TOTALFOULPOINTS = {
-    { totalFoulPoints } };
-var TOTALENEMYTO = {
-    { totalEnemyTOPoints } };
-var NOSTRINGTEAMINFO = {
-    { noStringTeamInfo } };
-
 function onSelection() {
     TEAMSELECTED = document.getElementById('teams').value;
     for (var x = 0; x < NOSTRINGTEAMINFO.length; x++) {
@@ -24,8 +6,7 @@ function onSelection() {
                 x: ['None', 'Low', 'Mid', 'High', 'Traversal'],
                 y: [NOSTRINGTEAMINFO[x][1], NOSTRINGTEAMINFO[x][2], NOSTRINGTEAMINFO[x][3], NOSTRINGTEAMINFO[x][4], NOSTRINGTEAMINFO[x][5]],
                 type: 'bar',
-                title: 'Percent Endgame',
-                name: name
+                title: 'Percent Endgame'
             }]);
         }
     }
@@ -76,14 +57,14 @@ for (var x = 0; x < 7; x++) {
         var team = dataType[i];
         xAxis = team[0];
         yAxis = team[1];
-        name = team[2];
+        dataName = team[2];
         data.push({
             x: xAxis,
             y: yAxis,
             mode: 'lines',
             line: { shape: 'spline' },
             type: 'scatter',
-            name: name
+            name: dataName
         });
         xAxis = [];
         yAxis = [];
@@ -100,34 +81,36 @@ for (var x = 0; x < 7; x++) {
 onSelection();
 
 
-d3.csv("{{ url_for('static', filename='data.csv') }}", function(rows) {
+d3.csv(DATAFILEPATH, function(rows) {
 
     function unpack(rows, key) {
         return rows.map(function(row) { return row[key]; });
     }
 
     var headerNames = d3.keys(rows[0]);
+    console.log("headerNames" + " = " + headerNames);
 
-    var headerValues = [];
     var cellValues = [];
     var cellValue = null;
+    // for (i = 1; i < rows.length; i++) {
+    //     cellValue = unpack(rows, headerNames[i]);
+    //     cellValues.push(cellValue);
+    // }
     for (i = 0; i < headerNames.length; i++) {
-        headerValue = [headerNames[i]];
-        headerValues[i] = headerValue;
-        if ((i % 2) != 0) {
-            cellValue = unpack(rows, headerNames[i]);
-        } else {
-            continue
-        }
-        cellValues[1] = cellValue;
+        // if ((i % 2) != 0) {
+        //     cellValue = unpack(rows, headerNames[i]);
+        // } else {
+        //     continue
+        // }
+        cellValue = unpack(rows, headerNames[i]);
+        cellValues[i] = cellValue;
     }
-
-
+    console.log("cellValues" + " = " + cellValues);
 
     var data = [{
         type: 'table',
         header: {
-            values: headerValues,
+            values: headerNames,
             align: "center",
         },
         cells: {

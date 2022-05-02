@@ -7,7 +7,7 @@ function onSelection() {
                 y: [NOSTRINGTEAMINFO[x][1], NOSTRINGTEAMINFO[x][2], NOSTRINGTEAMINFO[x][3], NOSTRINGTEAMINFO[x][4], NOSTRINGTEAMINFO[x][5]],
                 type: 'bar',
                 title: 'Percent Endgame'
-            }]);
+            }], {yaxis: {range: [0, 100]}});
         }
     }
     TEAMSELECTED = null;
@@ -86,6 +86,8 @@ d3.csv(DATAFILEPATH, function(rows) {
     function unpack(rows, key) {
         return rows.map(function(row) { return row[key]; });
     }
+    
+
 
     var headerNames = d3.keys(rows[0]);
     console.log("headerNames" + " = " + headerNames);
@@ -96,16 +98,42 @@ d3.csv(DATAFILEPATH, function(rows) {
     //     cellValue = unpack(rows, headerNames[i]);
     //     cellValues.push(cellValue);
     // }
+
+    // for (i = 0; i < rows.length; i++) {
+    //     if ((i % 2) == 0) {
+    //         continue
+    //     } else {
+    //         cellValues.push(rows[i]);
+    //         console.log("row " + i);
+    //         console.log(rows[i]["Ranking"]);
+    //     }
+    // }
+
     for (i = 0; i < headerNames.length; i++) {
         // if ((i % 2) != 0) {
         //     cellValue = unpack(rows, headerNames[i]);
         // } else {
         //     continue
         // }
+
         cellValue = unpack(rows, headerNames[i]);
         cellValues[i] = cellValue;
     }
-    console.log("cellValues" + " = " + cellValues);
+
+    tempList = [];
+    for (x = 0; x < cellValues.length; x++) {
+        for (i = 0; i < cellValues[x].length; i++) {
+            if ((i % 2) != 0) {
+                tempList.push(cellValues[x][i]);
+            } else {
+                continue
+            }
+        }
+        cellValues[x] = tempList;
+        tempList = [];
+    }
+
+    console.log(cellValues);
 
     var data = [{
         type: 'table',

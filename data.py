@@ -543,7 +543,7 @@ while keepGoing:
 
     
     values = [
-        ['Team Number', '', 'Av AutoPoints', 'Av TO Points', 'Av EG Points', 'Av FoulCount', 'Av FoulPoints', 'Av Total Points', 'Av Enemy TO', 'Taxi Robot', 'None Endgame', 'Low Endgame', 'Mid Endgame', 'High Endgame', 'Traversal EG', 'Most Common', '', 'Pos', 'Ranking', 'Best Teams']
+        ['Team Number', '', 'Av Auto Points', 'Av TO Points', 'Av EG Points', 'Av Foul Count', 'Av Foul Points', 'Av Total Points', 'Av Enemy TO', 'Taxi Robot', 'None End game', 'Low End game', 'Mid End game', 'High End game', 'Traversal EG', 'Most Common', '', 'Pos', 'Ranking', 'Best Teams']
     ]
     noStringValues = []
     rankings = []
@@ -637,10 +637,17 @@ while keepGoing:
     # Call the Sheets API
     sheet = service.spreadsheets()
 
-    with open("templates\data.csv", 'w') as t:
-        t.truncate()
-        writer = writer(t, NEWLINE="")
-        writer.writerows(values)
+    f = open("templates/data.csv", "w")
+    writer = writer(f)
+    for x in values:
+        writer.writerow(x)
+    # writer.writerows(values)
+    f.close
+
+    # with open("templates\data.csv", 'w') as t:
+    #     t.truncate()
+    #     writer = writer(t, NEWLINE="")
+    #     writer.writerows(values)
     
     
     

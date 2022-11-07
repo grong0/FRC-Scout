@@ -4,7 +4,7 @@ import json
 import plotly
 import plotly.express as px
 
-from data import totalPoints_fig, subplots_fig, eventCode, bestTeams, rankings, teamsDone, totalPoints_teams, totalAutoPoints, totalTeleOpPoints, totalEndgamePoints, totalFoulCount, totalFoulPoints, totalEnemyTOPoints, noStringTeamInfo, noStringValues
+from data import totalPoints_fig, eventCode, bestTeams, rankings, teamsDone, totalPoints_teams, totalAutoPoints, totalTeleOpPoints, totalEndgamePoints, totalFoulCount, totalFoulPoints, totalEnemyTOPoints, noStringTeamInfo, noStringValues
 
 app = Flask(__name__)
 

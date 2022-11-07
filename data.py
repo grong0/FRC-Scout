@@ -543,7 +543,7 @@ while keepGoing:
 
     
     values = [
-        ['Team Number', '', 'Av Auto Points', 'Av TO Points', 'Av EG Points', 'Av Foul Count', 'Av Foul Points', 'Av Total Points', 'Av Enemy TO', 'Taxi Robot', 'None End game', 'Low End game', 'Mid End game', 'High End game', 'Traversal EG', 'Most Common', '', 'Pos', 'Ranking', 'Best Teams']
+        ['Team Number', 'Av Auto Points', 'Av TO Points', 'Av EG Points', 'Av Foul Count', 'Av Foul Points', 'Av Total Points', 'Av Enemy TO', 'Taxi Robot', 'None End game', 'Low End game', 'Mid End game', 'High End game', 'Traversal EG', 'Most Common', '', 'Pos', 'Ranking', 'Best Teams']
     ]
     noStringValues = []
     rankings = []
@@ -561,8 +561,7 @@ while keepGoing:
         ranking_data = dict(ranking_response.json())
         rankingData = ranking_data['Rankings']
         values.append(
-            [x['teamNumber'], 
-            '', 
+            [x['teamNumber'],
             x['AvAutoPoints'], 
             x['AvTeleOpPoints'], 
             x['AvEndgamePoints'], 
@@ -637,12 +636,14 @@ while keepGoing:
     # Call the Sheets API
     sheet = service.spreadsheets()
 
-    f = open("templates/data.csv", "w")
-    writer = writer(f)
-    for x in values:
-        writer.writerow(x)
-    # writer.writerows(values)
-    f.close
+    file = open('g4g.csv', 'w+', newline ='')
+ 
+    # writing the data into the file
+    with file:   
+        write = writer(file)
+        write.writerows(values)
+
+    file.close()
 
     # with open("templates\data.csv", 'w') as t:
     #     t.truncate()

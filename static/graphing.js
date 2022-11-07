@@ -81,7 +81,7 @@ for (var x = 0; x < 7; x++) {
 onSelection();
 
 
-d3.csv(DATAFILEPATH, function(rows) {
+d3.csv("/static/data.csv", function(rows) {
 
     function unpack(rows, key) {
         return rows.map(function(row) { return row[key]; });

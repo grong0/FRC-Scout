@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\grong\Documents\Coding Programs (Shared)\FRC Scout\venv"
+VIRTUAL_ENV="C:\Users\Garrett\Documents\Coding Programs (Shared)\FRC Scout\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
